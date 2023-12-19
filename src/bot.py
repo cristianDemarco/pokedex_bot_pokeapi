@@ -62,7 +62,6 @@ async def send_pokemon(update: Update, context: ContextTypes.DEFAULT_TYPE, is_ca
     try:
         data = pokemonAPI.get_api_data(pokemon_name, variety)
     except json.decoder.JSONDecodeError as e:
-        print(e)
         await update.message.reply_text(
             text = TEXTS["IT"]["ERROR"]["POKEMON_NOT_VALID"].replace("<pokemon_name>", f"{pokemon_name}")
         )

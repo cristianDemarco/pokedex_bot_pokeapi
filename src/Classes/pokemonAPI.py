@@ -8,7 +8,7 @@ import json
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from Classes.pokemonAPIData import PokemonAPIData
 
-r = redis.Redis(host='localhost', port=6379, decode_responses=True)
+r = redis.Redis(host='redis', port=6379, decode_responses=True)
 
 class PokemonAPI:
     
@@ -33,9 +33,11 @@ class PokemonAPI:
             cache = json.loads(cache)
             logging.info(f"Found {full_url} on redis")
             return cache
+        except redis.exceptions.ConnectionError:
+            logging.exception("Redis service is not active")
+            is_redis_on = False
         except Exception as e:
-            print(e)
-            is_redis_on = False            
+            logging.exception(e)            
         
         logging.info(f"Sending API request to {full_url}")
         response = requests.get(full_url)
