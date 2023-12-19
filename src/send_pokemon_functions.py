@@ -1,0 +1,85 @@
+import sys
+import os
+import json
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from Classes.pokemon import Pokemon
+from TEXTS import translate, TEXTS
+from telegram.ext import ContextTypes
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
+
+async def send_message(context : ContextTypes.DEFAULT_TYPE, pokemon : Pokemon, chat_id : int, message_id : int, reply_markup : InlineKeyboardMarkup, is_callback : bool):
+    message = await context.bot.send_photo(
+        chat_id = chat_id,
+        caption = translate("POKEDEX_RETURN_MESSAGE", language="IT", data={
+            "name": pokemon.name,
+            "id" : pokemon.id,
+            "generation" : pokemon.generation,
+            "abilities" : pokemon.abilities,
+            "is_legendary" : TEXTS["IT"]["LEGENDARY_POKEMON_MESSAGE"] if pokemon.is_legendary else "",
+            "is_mythical" : TEXTS["IT"]["MYTHICAL_POKEMON_MESSAGE"] if pokemon.is_mythical else "",
+            "types" : pokemon.types,
+            "description" : pokemon.description
+        }),
+        photo = pokemon.photo,
+        reply_markup=reply_markup,
+        reply_to_message_id= message_id if not is_callback else None,
+        parse_mode="html"
+    )
+
+    print(message_id)
+
+    return message
+
+def create_keyboard(pokemon) -> InlineKeyboardMarkup:
+    keyboard = [
+        [
+            InlineKeyboardButton(text = f"< N°{int(pokemon.id) - 1}", callback_data=json.dumps(
+                    {
+                        "pokemon" : f"{TEXTS['SEARCH_POKEMON_COMAND']} {int(pokemon.id) - 1}",
+                        "variety" : f"{int(pokemon.variety)}"
+                        
+                    }
+                )
+            ),
+            InlineKeyboardButton(text = f"N°{int(pokemon.id) + 1} >", callback_data=json.dumps(
+                    {
+                        "pokemon" : f"{TEXTS['SEARCH_POKEMON_COMAND']} {int(pokemon.id) + 1}",
+                        "variety" : f"{int(pokemon.variety)}"
+                    }
+                )
+            )
+        ]
+    ]
+
+    if pokemon.number_of_varieties > 1:
+        change_variety_button = InlineKeyboardButton(text = TEXTS["IT"]["TEXT_CHANGE_VARIETY_BUTTON"], callback_data=json.dumps(            
+                    {
+                        "pokemon" : f"{TEXTS['SEARCH_POKEMON_COMAND']} {int(pokemon.id)}",
+                        "variety" : f"{int(pokemon.variety) + 1}"
+                    }
+                )
+            )
+        
+        keyboard[0].insert(1, change_variety_button)
+
+     
+    return keyboard
+
+def get_data_from_message(update : Update, is_callback : bool):
+    if not is_callback:
+        pokemon_name = update.message.text
+        chat_id = update.effective_chat.id
+        message_id = update.message.message_id
+        variety = 0
+    else:
+        query_data = json.loads(update.callback_query.data)
+
+        pokemon_name = query_data["pokemon"]
+        chat_id = update.callback_query.message.chat.id
+        message_id = update.callback_query.message.message_id
+        variety = int(query_data["variety"])
+
+    pokemon_name = pokemon_name.replace(TEXTS['SEARCH_POKEMON_COMAND'], "").strip().lower()
+
+    return pokemon_name, chat_id, message_id, variety
