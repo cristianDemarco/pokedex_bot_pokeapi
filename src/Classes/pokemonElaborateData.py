@@ -2,6 +2,7 @@ import re
 import sys
 import os
 import random
+import logging
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from Classes.pokemon import Pokemon
@@ -35,9 +36,13 @@ class PokemonElaborateData:
 
         if len(descriptions_set) == 0:
             descriptions_set = set(description["flavor_text"] for description in descriptions if description["language"]["name"] == "en")
-            warning = TEXTS["IT"]["DESCRIPTION_NOT_AVAILABLE"]
+            warning = TEXTS["IT"]["ITALIAN_DESCRIPTION_NOT_AVAILABLE"]
 
-        description = warning + " ".join(random.choice(list(descriptions_set)).split())
+        try:
+            description = warning + " ".join(random.choice(list(descriptions_set)).split())
+        except Exception as e:
+            description = TEXTS["IT"]["DESCRIPTION_NOT_AVAILABLE"]
+            logging.exception(e)
         
         is_legendary = self.species["is_legendary"]
         is_mythical = self.species["is_mythical"]
