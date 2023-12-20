@@ -32,39 +32,35 @@ async def send_message(context : ContextTypes.DEFAULT_TYPE, pokemon : Pokemon, c
     return message
 
 def create_keyboard(pokemon) -> InlineKeyboardMarkup:
-    keyboard = [
-        [
-            InlineKeyboardButton(text = f"< N°{int(pokemon.id) - 1}", callback_data=json.dumps(
-                    {
-                        "pokemon" : f"{TEXTS['SEARCH_POKEMON_COMAND']} {int(pokemon.id) - 1}",
-                        "variety" : f"{int(pokemon.variety)}"
-                        
-                    }
-                )
-            ),
-            InlineKeyboardButton(text = f"N°{int(pokemon.id) + 1} >", callback_data=json.dumps(
-                    {
-                        "pokemon" : f"{TEXTS['SEARCH_POKEMON_COMAND']} {int(pokemon.id) + 1}",
-                        "variety" : f"{int(pokemon.variety)}"
-                    }
-                )
-            )
-        ]
-    ]
+    keyboard = [[]]
+
+    if pokemon.id < 1:
+        keyboard[0].append(create_button(pokemon=pokemon,
+                                        text = f"< N°{int(pokemon.id) - 1}",
+                                        id_changer=-1))
 
     if pokemon.number_of_varieties > 1:
-        change_variety_button = InlineKeyboardButton(text = TEXTS["IT"]["TEXT_CHANGE_VARIETY_BUTTON"], callback_data=json.dumps(            
+        keyboard[0].append(create_button(pokemon=pokemon,
+                                        text = TEXTS["IT"]["TEXT_CHANGE_VARIETY_BUTTON"],
+                                        id_changer=0, variety_changer=1))
+
+    keyboard[0].append(create_button(pokemon=pokemon,
+                                    text = f"N°{int(pokemon.id) + 1} >",
+                                    id_changer=1))
+
+    return keyboard
+
+def create_button(pokemon, text, id_changer, variety_changer = 0):
+    button = InlineKeyboardButton(text = text, callback_data=json.dumps(            
                     {
-                        "pokemon" : f"{TEXTS['SEARCH_POKEMON_COMAND']} {int(pokemon.id)}",
-                        "variety" : f"{int(pokemon.variety) + 1}"
+                        "pokemon" : f"{TEXTS['SEARCH_POKEMON_COMAND']} {int(pokemon.id) + id_changer}",
+                        "variety" : f"{int(pokemon.variety) + variety_changer}"
                     }
                 )
             )
-        
-        keyboard[0].insert(1, change_variety_button)
+    
+    return button
 
-     
-    return keyboard
 
 def get_data_from_message(update : Update, is_callback : bool):
     if not is_callback:

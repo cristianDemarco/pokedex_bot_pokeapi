@@ -75,11 +75,11 @@ async def send_pokemon(update: Update, context: ContextTypes.DEFAULT_TYPE, is_ca
             await context.bot.deleteMessage(chat_id=chat_id, message_id=update.callback_query.message.message_id)
         await send_message(context, pokemon, chat_id, message_id, reply_markup, is_callback)
     except telegram.error.BadRequest as e:
-        print(e)
+        logging.exception(e)
         await context.bot.answer_callback_query(callback_query_id = update.callback_query.id, text = TEXTS["IT"]["ERROR"]["OPTION_ALREADY_CHOSEN"])
 
     end_timestamp = time.time()
-    print(f"Time occured: {end_timestamp - start_timestamp}")
+    logging.info(f"Time occured: {end_timestamp - start_timestamp}")
 
 def main() -> None:
     """Start the bot."""
