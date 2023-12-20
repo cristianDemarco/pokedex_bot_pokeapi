@@ -16,6 +16,11 @@ class PokemonAPI:
         self.URL = "https://pokeapi.co/api"
         self.API_VERSION = "v2"
 
+    def get_pokemon_count(self) -> int:
+        api = self.get('pokemon-species/?limit=0')
+
+        return api["count"]
+
     def get(self, api: str) -> dict:        
         if api.startswith(self.URL):
             full_url = api

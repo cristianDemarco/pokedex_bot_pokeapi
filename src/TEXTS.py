@@ -29,7 +29,7 @@ Prova tu stesso!
         "LEGENDARY_POKEMON_MESSAGE" : "  [Leggendario]",
         "MYTHICAL_POKEMON_MESSAGE" : "  [Misterioso]",
         "TEXT_CHANGE_VARIETY_BUTTON" : "Cambia forma",
-        "DESCRIPTION_NOT_AVAILABLE" : "<i>La descrizione non è disponIbile in italiano.</i>\n",
+        "DESCRIPTION_NOT_AVAILABLE" : "<i>La descrizione non è disponibile in italiano.</i>\n",
         "ERROR":{
             "POKEMON_NOT_VALID": "Il pokémon <pokemon_name> non è presente all'interno del pokédex",
             "OPTION_ALREADY_CHOSEN" : "Hai già scelto il prossimo pokémon!"

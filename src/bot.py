@@ -27,6 +27,7 @@ logging.basicConfig(
 )
 
 pokemonAPI = PokemonAPI()
+POKEMON_COUNT = pokemonAPI.get_pokemon_count()
 
 try:
     from telegram import __version_info__
@@ -68,7 +69,7 @@ async def send_pokemon(update: Update, context: ContextTypes.DEFAULT_TYPE, is_ca
 
     pokemon = PokemonElaborateData(data).elaborate()
 
-    reply_markup = InlineKeyboardMarkup(create_keyboard(pokemon))
+    reply_markup = InlineKeyboardMarkup(create_keyboard(pokemon, POKEMON_COUNT))
     
     try:
         if is_callback:

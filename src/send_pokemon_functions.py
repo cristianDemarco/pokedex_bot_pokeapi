@@ -31,10 +31,10 @@ async def send_message(context : ContextTypes.DEFAULT_TYPE, pokemon : Pokemon, c
 
     return message
 
-def create_keyboard(pokemon) -> InlineKeyboardMarkup:
+def create_keyboard(pokemon, POKEMON_COUNT) -> InlineKeyboardMarkup:
     keyboard = [[]]
 
-    if pokemon.id < 1:
+    if int(pokemon.id) > 1:
         keyboard[0].append(create_button(pokemon=pokemon,
                                         text = f"< N°{int(pokemon.id) - 1}",
                                         id_changer=-1))
@@ -43,10 +43,10 @@ def create_keyboard(pokemon) -> InlineKeyboardMarkup:
         keyboard[0].append(create_button(pokemon=pokemon,
                                         text = TEXTS["IT"]["TEXT_CHANGE_VARIETY_BUTTON"],
                                         id_changer=0, variety_changer=1))
-
-    keyboard[0].append(create_button(pokemon=pokemon,
-                                    text = f"N°{int(pokemon.id) + 1} >",
-                                    id_changer=1))
+    if int(pokemon.id) < POKEMON_COUNT:
+        keyboard[0].append(create_button(pokemon=pokemon,
+                                        text = f"N°{int(pokemon.id) + 1} >",
+                                        id_changer=1))
 
     return keyboard
 
