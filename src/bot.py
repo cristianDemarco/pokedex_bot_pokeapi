@@ -98,7 +98,8 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    #for pokemon_name in range(0,1011):
-    #    pokemonAPI.get_api_data(pokemon_name, 0)
+
+    #for pokemon_name in range(0,1025):
+    #   pokemonAPI.get_api_data(pokemon_name, 0)
 
     main()

@@ -27,8 +27,6 @@ async def send_message(context : ContextTypes.DEFAULT_TYPE, pokemon : Pokemon, c
         parse_mode="html"
     )
 
-    print(message_id)
-
     return message
 
 def create_keyboard(pokemon, POKEMON_COUNT) -> InlineKeyboardMarkup:
