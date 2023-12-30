@@ -14,7 +14,8 @@ TEXTS = {
 <b>Abilità:</b> <abilities>\n
 <b>Descrizione:</b> <description>
 """,
-        "START_MESSAGE_TEXT" : rf"Benvenuto <username>! Questo è un bot che ti permette di cercare facilmente pokémon attraverso il pokédex.\nPer iniziare digita <code>/help</code>.",
+        "START_MESSAGE_TEXT" : rf"""Benvenuto <username>! Questo è un bot che ti permette di cercare facilmente pokémon attraverso il pokédex.
+Per iniziare digita <code>/help</code>.""",
         "HELP_MESSAGE_TEXT" : """
 Per cercare un pokémon bisogna digitare <code>/pokemon</code> seguito dal nome o il numero di pokédex del pokémon che vuoi cercare.
 
