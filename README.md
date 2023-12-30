@@ -23,9 +23,7 @@
 
 This project is a telegram bot that functions as a pokédex.
 
-It is able to return important information (including an image) about a specific pokémon, given in input with the `/pokemon {pokemon}` command.ù
-
-<br>
+It is able to return important information (including an image) about a specific pokémon, given in input with the `/pokemon {pokemon}` command.
 
 # Bot commands
 
