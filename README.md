@@ -65,8 +65,13 @@ In the message might also appear special "tags" next to the pokémon name that i
 <br/>
 
 <p float="left">
-  <img src="docs/images/pokemon_command_example_1.jpg" width="340" height="608"/>
+  <img src="docs/images/pokemon_command_example_1.jpg" width="320" height="608"/>
   <img src="docs/images/pokemon_command_example_2.jpg" width="340" height="608"/>
+</p>
+
+<p float="left">
+  <img src="docs/images/pokemon_command_example_3.jpg" width="352" height="608"/>
+  <img src="docs/images/pokemon_command_example_4.jpg" width="340" height="608"/>
 </p>
 
 <br/>
