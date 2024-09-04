@@ -4,9 +4,8 @@ import os
 import random
 import logging
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from Classes.pokemon import Pokemon
-from Classes.pokemonAPIData import PokemonAPIData
+from models.Pokemon import Pokemon
+from models.pokemonAPIData import PokemonAPIData
 from TEXTS import TEXTS
 
 class PokemonElaborateData: 
@@ -48,4 +47,18 @@ class PokemonElaborateData:
         is_mythical = self.species["is_mythical"]
         number_of_varieties = len(self.species["varieties"])
 
-        return Pokemon(name, id, generation, self.abilities, is_legendary, is_mythical, photo_link, self.types, description, 0 if int(self.variety) > number_of_varieties - 1 else self.variety, number_of_varieties)      
+        variety = self.variety
+        if int(self.variety) > number_of_varieties-1:
+            variety = 0
+
+        return Pokemon(name=name,
+                       id=id,
+                       generation=generation,
+                       abilities=self.abilities,
+                       is_legendary=is_legendary,
+                       is_mythical=is_mythical,
+                       photo=photo_link,
+                       types=self.types,
+                       description=description,
+                       variety=variety, 
+                       number_of_varieties=number_of_varieties)      

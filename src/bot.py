@@ -13,8 +13,8 @@ from telegram.ext import Application, CommandHandler, ContextTypes, CallbackQuer
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from TOKEN import TOKEN
-from Classes.pokemonAPI import PokemonAPI
-from Classes.pokemonElaborateData import PokemonElaborateData
+from clients.pokemonAPI import PokemonAPI
+from clients.pokemonElaborateData import PokemonElaborateData
 from TEXTS import TEXTS
 from src.send_pokemon_functions import send_message, create_keyboard, get_data_from_message
 
@@ -99,7 +99,7 @@ def main() -> None:
 
 if __name__ == "__main__":
 
-    #for pokemon_name in range(0,1025):
-    #   pokemonAPI.get_api_data(pokemon_name, 0)
+    for pokemon_name in range(1,1250):
+       pokemonAPI.get_api_data(pokemon_name, 0)
 
     main()
