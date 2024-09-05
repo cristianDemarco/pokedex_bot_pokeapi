@@ -3,7 +3,7 @@ import os
 import json
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from models.Pokemon import Pokemon
+from models.pokemon import Pokemon
 from TEXTS import translate, TEXTS
 from telegram.ext import ContextTypes
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update

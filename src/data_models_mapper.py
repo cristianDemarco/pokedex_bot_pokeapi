@@ -1,7 +1,7 @@
 import random
 import logging
-from models.Pokemon import Pokemon
-from models.pokemonAPIData import PokemonAPIData
+from models.pokemon import Pokemon
+from models.pokemon_API_data import PokemonAPIData
 from TEXTS import TEXTS
 
 def map_API_data_to_pokemon(data : PokemonAPIData) -> Pokemon:

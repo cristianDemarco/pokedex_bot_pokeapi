@@ -1,4 +1,4 @@
-from models.pokemonAPIData import PokemonAPIData
+from models.pokemon_API_data import PokemonAPIData
 from cached import cached
 import requests
 import logging

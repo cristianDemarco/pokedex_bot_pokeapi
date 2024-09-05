@@ -12,7 +12,7 @@ from telegram.ext import Application, CommandHandler, ContextTypes, CallbackQuer
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from TOKEN import TOKEN
-from clients.pokemonAPI import PokemonAPI
+from clients.pokemon_API import PokemonAPI
 from data_models_mapper import map_API_data_to_pokemon
 from TEXTS import TEXTS
 from src.send_pokemon_functions import send_message, create_keyboard, get_data_from_message
