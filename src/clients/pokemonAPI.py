@@ -6,7 +6,7 @@ import redis
 import json
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from clients.pokemonElaborateData import PokemonAPIData
+from data_models_mapper import PokemonAPIData
 
 r = redis.Redis(host='redis', port=6379, decode_responses=True)
 

@@ -11,10 +11,9 @@ from telegram import Update
 from telegram.ext import Application, CommandHandler, ContextTypes, CallbackQueryHandler
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 from TOKEN import TOKEN
 from clients.pokemonAPI import PokemonAPI
-from clients.pokemonElaborateData import PokemonElaborateData
+from data_models_mapper import map_API_data_to_pokemon
 from TEXTS import TEXTS
 from src.send_pokemon_functions import send_message, create_keyboard, get_data_from_message
 
@@ -67,7 +66,7 @@ async def send_pokemon(update: Update, context: ContextTypes.DEFAULT_TYPE, is_ca
             text = TEXTS["IT"]["ERROR"]["POKEMON_NOT_VALID"].replace("<pokemon_name>", f"{pokemon_name}")
         )
 
-    pokemon = PokemonElaborateData(data).elaborate()
+    pokemon = map_API_data_to_pokemon(data)
 
     reply_markup = InlineKeyboardMarkup(create_keyboard(pokemon, POKEMON_COUNT))
     
@@ -99,7 +98,7 @@ def main() -> None:
 
 if __name__ == "__main__":
 
-    for pokemon_name in range(1,1250):
-       pokemonAPI.get_api_data(pokemon_name, 0)
+    #for pokemon_name in range(1,1250):
+    #   pokemonAPI.get_api_data(pokemon_name, 0)
 
     main()
