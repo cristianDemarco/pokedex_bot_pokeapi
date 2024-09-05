@@ -1,13 +1,13 @@
-from cached import CacheManager
+from cached import cached
 from pokemontcgsdk import Card
+import logging
 
-class pokemonCardsAPI:
+class PokemonCardsAPI:
 
-    def __init__(self):
-        self.cache_manager = CacheManager(URL='https://pokeapi.co/api', API_VERSION = 'v2')
-
+    @cached
     def get_cards(self, name) -> None:
         cards = Card.where(q=f'name:{name}')
+        cards = "\n".join(card.name for card in cards)
         return cards
     
     def get_cards_number(self):

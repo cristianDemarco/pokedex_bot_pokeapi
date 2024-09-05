@@ -6,6 +6,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 TEXTS = {
     "SEARCH_POKEMON_KEYWORD" : "pokemon",
     "SEARCH_POKEMON_COMAND" : "/pokemon",
+    "SEARCH_CARDS_COMAND" : "/cards",
     "IT":{
         "POKEDEX_RETURN_MESSAGE" : f"""
 <name> N°<id><b><is_legendary></b><b><is_mythical></b>
@@ -30,6 +31,7 @@ Prova tu stesso!
         "LEGENDARY_POKEMON_MESSAGE" : "  [Leggendario]",
         "MYTHICAL_POKEMON_MESSAGE" : "  [Misterioso]",
         "TEXT_CHANGE_VARIETY_BUTTON" : "Cambia forma",
+        'SEARCH_CARDS_TEXT' : 'Ecco la lista delle carte col nome <pokemon>:\n',
         "ITALIAN_DESCRIPTION_NOT_AVAILABLE" : "<i>La descrizione non è disponibile in italiano.</i>\n",
         "DESCRIPTION_NOT_AVAILABLE" : "<i>La descrizione per questo pokémon non è disponibile attualmente.</i>\n",
         "ERROR":{

@@ -13,9 +13,10 @@ from telegram.ext import Application, CommandHandler, ContextTypes, CallbackQuer
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from TOKEN import TOKEN
 from clients.pokemon_API import PokemonAPI
+from clients.pokemon_cards_API import PokemonCardsAPI
 from data_models_mapper import map_API_data_to_pokemon
 from TEXTS import TEXTS
-from src.send_pokemon_functions import send_message, create_keyboard, get_data_from_message
+from src.send_pokemon_functions import send_message, create_keyboard, get_data_from_message, translate
 
 # set higher logging level for httpx to avoid all GET and POST requests being logged
 # logging.getLogger("httpx").setLevel(logging.DEBUG)
@@ -57,7 +58,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def send_pokemon(update: Update, context: ContextTypes.DEFAULT_TYPE, is_callback : bool = False) -> None:
     start_timestamp = time.time()
     
-    pokemon_name, chat_id, message_id, variety = get_data_from_message(update, is_callback)
+    pokemon_name, chat_id, message_id, variety = get_data_from_message(update, is_callback, TEXTS['SEARCH_POKEMON_COMAND'])
 
     try:
         data = pokemonAPI.get_api_data(pokemon_name, variety)
@@ -82,6 +83,13 @@ async def send_pokemon(update: Update, context: ContextTypes.DEFAULT_TYPE, is_ca
     end_timestamp = time.time()
     logging.info(f"Time occured: {end_timestamp - start_timestamp}")
 
+async def send_cards(update: Update, context: ContextTypes.DEFAULT_TYPE, is_callback : bool = False) -> None:
+    pokemon_name, chat_id, message_id, variety = get_data_from_message(update, is_callback, TEXTS['SEARCH_CARDS_COMAND'])
+    pokemon_cards_API = PokemonCardsAPI()
+    message = translate(message='SEARCH_CARDS_TEXT', language='IT', data={'pokemon':f'{pokemon_name}'})
+    await update.message.reply_html("".join([message, pokemon_cards_API.get_cards(pokemon_name)]))
+
+
 def main() -> None:
     """Start the bot."""
     # Create the Application and pass it your bot's token.
@@ -91,6 +99,7 @@ def main() -> None:
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("help", help_command))
     application.add_handler(CommandHandler(TEXTS["SEARCH_POKEMON_KEYWORD"], send_pokemon))
+    application.add_handler(CommandHandler(['cards'], send_cards))
     application.add_handler(CallbackQueryHandler(button_handler))
 
     # Run the bot until the user presses Ctrl-C

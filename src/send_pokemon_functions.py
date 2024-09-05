@@ -60,7 +60,7 @@ def create_button(pokemon, text, id_changer, variety_changer = 0):
     return button
 
 
-def get_data_from_message(update : Update, is_callback : bool):
+def get_data_from_message(update : Update, is_callback : bool, comand : str):
     if not is_callback:
         pokemon_name = update.message.text
         chat_id = update.effective_chat.id
@@ -74,6 +74,6 @@ def get_data_from_message(update : Update, is_callback : bool):
         message_id = update.callback_query.message.message_id
         variety = int(query_data["variety"])
 
-    pokemon_name = pokemon_name.strip().lower().replace(TEXTS['SEARCH_POKEMON_COMAND'], "").strip()
+    pokemon_name = pokemon_name.strip().lower().replace(comand, "").strip()
 
     return pokemon_name, chat_id, message_id, variety
