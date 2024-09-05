@@ -74,6 +74,6 @@ def get_data_from_message(update : Update, is_callback : bool):
         message_id = update.callback_query.message.message_id
         variety = int(query_data["variety"])
 
-    pokemon_name = pokemon_name.replace(TEXTS['SEARCH_POKEMON_COMAND'], "").strip().lower()
+    pokemon_name = pokemon_name.strip().lower().replace(TEXTS['SEARCH_POKEMON_COMAND'], "").strip()
 
     return pokemon_name, chat_id, message_id, variety

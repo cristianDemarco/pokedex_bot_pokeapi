@@ -65,6 +65,7 @@ async def send_pokemon(update: Update, context: ContextTypes.DEFAULT_TYPE, is_ca
         await update.message.reply_text(
             text = TEXTS["IT"]["ERROR"]["POKEMON_NOT_VALID"].replace("<pokemon_name>", f"{pokemon_name}")
         )
+        return
 
     pokemon = map_API_data_to_pokemon(data)
 

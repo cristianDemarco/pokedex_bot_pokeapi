@@ -1,36 +1,49 @@
 from models.pokemonAPIData import PokemonAPIData
-from CacheManager import CacheManager
+from cached import cached
+import requests
+import logging
+import json
 
 class PokemonAPI:
+    def __init__(self) -> None:
+        self.URL = "https://pokeapi.co/api"
+        self.API_VERSION = "v2"
+    
+    @cached
+    def get(self, api: str) -> dict:        
+        if api.startswith(self.URL):
+            full_url = api
+        else:
+            full_url = '/'.join([self.URL, self.API_VERSION, api])
 
-    def __init__(self):
-        self.cache_manager = CacheManager(URL='https://pokeapi.co/api', API_VERSION = 'v2')
+        logging.info(f'URL:{full_url}')
+
+        return requests.get(full_url).json()
 
     def get_pokemon_count(self) -> int:
-        api = self.cache_manager.get('pokemon-species/?limit=0')
-
+        api = self.get('pokemon-species')
         return api["count"]
 
     def get_pokemon_species(self, pokemon: str) -> dict:
         api = f'pokemon-species/{pokemon}'
-        return self.cache_manager(api)
+        return self.get(api)
     
     def get_pokemon_variety(self, pokemon_variety: str) -> dict:
         api = f'pokemon/{pokemon_variety}'
-        return self.cache_manager(api)
+        return self.get(api)
     
     def get_api_data(self, pokemon : str, variety : int = 0) -> PokemonAPIData:
         
-        species_data = self.cache_manager_pokemon_species(pokemon=pokemon)
+        species_data = self.get_pokemon_species(pokemon=pokemon)
 
         if variety > len(species_data["varieties"]) - 1:
             variety = 0
                     
         pokemon_variety = species_data["varieties"][variety]["pokemon"]["name"]
-        pokemon_data = self.cache_manager_pokemon_variety(pokemon_variety=pokemon_variety)
+        pokemon_data = self.get_pokemon_variety(pokemon_variety=pokemon_variety)
         
-        types = self.cache_manager_list_of_elements(pokemon_data, "types", "type")
-        abilities = self.cache_manager_list_of_elements(pokemon_data, "abilities", "ability")
+        types = self.get_list_of_elements(pokemon_data, "types", "type")
+        abilities = self.get_list_of_elements(pokemon_data, "abilities", "ability")
 
         return PokemonAPIData(pokemon_data, species_data, variety, types, abilities)
     
@@ -40,7 +53,7 @@ class PokemonAPI:
 
         for value in data[elements]:
             element_api = value[element]["url"]
-            element_data = self.cache_manager(element_api)
+            element_data = self.get(element_api)
             for item in element_data["names"]:
                 if item["language"]["name"] == language:
                     elements_list.append(item["name"])
