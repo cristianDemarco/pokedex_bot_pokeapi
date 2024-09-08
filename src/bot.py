@@ -16,7 +16,8 @@ from clients.pokemon_API import PokemonAPI
 from clients.pokemon_cards_API import PokemonCardsAPI
 from data_models_mapper import map_API_data_to_pokemon
 from TEXTS import TEXTS
-from src.send_pokemon_functions import send_message, create_keyboard, get_data_from_message, translate
+from src.send_pokemon_functions import send_pokemon_message, create_keyboard, get_data_from_message, translate
+from src.send_card_functions import send_pokemon_card
 
 # set higher logging level for httpx to avoid all GET and POST requests being logged
 # logging.getLogger("httpx").setLevel(logging.DEBUG)
@@ -75,7 +76,7 @@ async def send_pokemon(update: Update, context: ContextTypes.DEFAULT_TYPE, is_ca
     try:
         if is_callback:
             await context.bot.deleteMessage(chat_id=chat_id, message_id=update.callback_query.message.message_id)
-        await send_message(context, pokemon, chat_id, message_id, reply_markup, is_callback)
+        await send_pokemon_message(context, pokemon, chat_id, message_id, reply_markup, is_callback)
     except telegram.error.BadRequest as e:
         logging.exception(e)
         await context.bot.answer_callback_query(callback_query_id = update.callback_query.id, text = TEXTS["IT"]["ERROR"]["OPTION_ALREADY_CHOSEN"])
@@ -84,11 +85,23 @@ async def send_pokemon(update: Update, context: ContextTypes.DEFAULT_TYPE, is_ca
     logging.info(f"Time occured: {end_timestamp - start_timestamp}")
 
 async def send_cards(update: Update, context: ContextTypes.DEFAULT_TYPE, is_callback : bool = False) -> None:
-    pokemon_name, chat_id, message_id, variety = get_data_from_message(update, is_callback, TEXTS['SEARCH_CARDS_COMAND'])
+    pokemon_name = get_data_from_message(update, is_callback, TEXTS['SEARCH_CARDS_COMAND'])
     pokemon_cards_API = PokemonCardsAPI()
     message = translate(message='SEARCH_CARDS_TEXT', language='IT', data={'pokemon':f'{pokemon_name}'})
     await update.message.reply_html("".join([message, pokemon_cards_API.get_cards(pokemon_name)]))
 
+async def send_card(update: Update, context: ContextTypes.DEFAULT_TYPE, is_callback : bool = False) -> None:
+    pokemon_name, chat_id, message_id, variety = get_data_from_message(update, is_callback, TEXTS['SEARCH_CARD_COMAND'])
+    pokemon_cards_API = PokemonCardsAPI()
+    card = pokemon_cards_API.get_card(pokemon_name)
+    await send_pokemon_card(
+        context=context,
+        pokemon_card=card,
+        chat_id=chat_id,
+        message_id=message_id,
+        is_callback=is_callback,
+        reply_markup=None
+    )
 
 def main() -> None:
     """Start the bot."""
@@ -100,6 +113,7 @@ def main() -> None:
     application.add_handler(CommandHandler("help", help_command))
     application.add_handler(CommandHandler(TEXTS["SEARCH_POKEMON_KEYWORD"], send_pokemon))
     application.add_handler(CommandHandler(['cards'], send_cards))
+    application.add_handler(CommandHandler(['card'], send_card))
     application.add_handler(CallbackQueryHandler(button_handler))
 
     # Run the bot until the user presses Ctrl-C
