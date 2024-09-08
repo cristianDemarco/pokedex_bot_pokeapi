@@ -49,7 +49,7 @@ async def send_pokemon_message(
 
 
 def create_keyboard(pokemon: Pokemon, POKEMON_COUNT: int) -> InlineKeyboardMarkup:
-    keyboard = [[]]
+    keyboard = []
 
     there_is_pokemon_before = int(pokemon.id) > 1
 
@@ -99,7 +99,11 @@ def create_button(
     return button
 
 
+import logging
+
+
 def get_data_from_message(update: Update, is_callback: bool, comand: str):
+    logging.info(is_callback)
     if not is_callback:
         pokemon_name = update.message.text
         chat_id = update.effective_chat.id
