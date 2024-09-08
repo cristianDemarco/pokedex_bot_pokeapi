@@ -4,21 +4,21 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 TEXTS = {
-    "SEARCH_POKEMON_KEYWORD" : "pokemon",
-    "SEARCH_POKEMON_COMAND" : "/pokemon",
-    "SEARCH_CARDS_COMAND" : "/cards",
-    "SEARCH_CARD_COMAND" : "/card",
-    "IT":{
-        "POKEDEX_RETURN_MESSAGE" : f"""
+    "SEARCH_POKEMON_KEYWORD": "pokemon",
+    "SEARCH_POKEMON_COMAND": "/pokemon",
+    "SEARCH_CARDS_COMAND": "/cards",
+    "SEARCH_CARD_COMAND": "/card",
+    "IT": {
+        "POKEDEX_RETURN_MESSAGE": f"""
 <name> N°<id><b><is_legendary></b><b><is_mythical></b>
 <generation>° Generazione
 <b>Tipo:</b> <types>
 <b>Abilità:</b> <abilities>\n
 <b>Descrizione:</b> <description>
 """,
-        "START_MESSAGE_TEXT" : rf"""Benvenuto <username>! Questo è un bot che ti permette di cercare facilmente pokémon attraverso il pokédex.
+        "START_MESSAGE_TEXT": rf"""Benvenuto <username>! Questo è un bot che ti permette di cercare facilmente pokémon attraverso il pokédex.
 Per iniziare digita <code>/help</code>.""",
-        "HELP_MESSAGE_TEXT" : """
+        "HELP_MESSAGE_TEXT": """
 Per cercare un pokémon bisogna digitare <code>/pokemon</code> seguito dal nome o il numero di pokédex del pokémon che vuoi cercare.
 
 Alcuni esempi:
@@ -29,27 +29,28 @@ Alcuni esempi:
 
 Prova tu stesso!
 """,
-        "LEGENDARY_POKEMON_MESSAGE" : "  [Leggendario]",
-        "MYTHICAL_POKEMON_MESSAGE" : "  [Misterioso]",
-        "TEXT_CHANGE_VARIETY_BUTTON" : "Cambia forma",
-        'SEARCH_CARDS_TEXT' : 'Ecco la lista delle carte col nome <pokemon>:\n',
-        'CARD_RETURN_MESSAGE':
-"""
+        "LEGENDARY_POKEMON_MESSAGE": "  [Leggendario]",
+        "MYTHICAL_POKEMON_MESSAGE": "  [Misterioso]",
+        "TEXT_CHANGE_VARIETY_BUTTON": "Cambia forma",
+        "SEARCH_CARDS_TEXT": "Ecco la lista delle carte col nome <pokemon>:\n",
+        "CARD_RETURN_MESSAGE": """
 <name>
-set: <set>
-Prezzo medio del cardmarket: <price>
+
+Set: <set>
+TCGPLAYER - Prezzo più basso: <price>$
 """,
-        "ITALIAN_DESCRIPTION_NOT_AVAILABLE" : "<i>La descrizione non è disponibile in italiano.</i>\n",
-        "DESCRIPTION_NOT_AVAILABLE" : "<i>La descrizione per questo pokémon non è disponibile attualmente.</i>\n",
-        "ERROR":{
+        "ITALIAN_DESCRIPTION_NOT_AVAILABLE": "<i>La descrizione non è disponibile in italiano.</i>\n",
+        "DESCRIPTION_NOT_AVAILABLE": "<i>La descrizione per questo pokémon non è disponibile attualmente.</i>\n",
+        "ERROR": {
             "POKEMON_NOT_VALID": "Il pokémon <pokemon_name> non è presente all'interno del pokédex",
-            "OPTION_ALREADY_CHOSEN" : "Hai già scelto il prossimo pokémon!"
-        }
-    }
+            "OPTION_ALREADY_CHOSEN": "Hai già scelto il prossimo pokémon!",
+        },
+    },
 }
 
-def translate(message, language: str = 'IT', data: dict = {}):
+
+def translate(message, language: str = "IT", data: dict = {}):
     translation = TEXTS[language][message]
     for key in data:
-        translation = translation.replace(f'<{key}>', data[key])
+        translation = translation.replace(f"<{key}>", data[key])
     return translation

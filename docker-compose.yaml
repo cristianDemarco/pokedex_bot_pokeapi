@@ -1,10 +1,14 @@
-version: '3.8'
 services:
   bot:
     build: .
+    develop:
+        watch:
+          - action: rebuild
+            path: ./src
+            target: /app/src
   redis:
     image: redis:7.2.1-alpine
-    # restart: always
+    restart: always
     ports:
       - '6379:6379'
     command: redis-server --save 20 1 --loglevel warning
