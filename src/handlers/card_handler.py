@@ -1,8 +1,5 @@
-import sys
-import os
 from clients.pokemon_cards_API import PokemonCardsAPI
 
-from telegram import Update
 from telegram import Update
 from telegram.ext import ContextTypes
 

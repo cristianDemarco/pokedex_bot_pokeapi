@@ -5,13 +5,14 @@ import os
 from telegram import __version__ as TG_VER
 from telegram import Update
 from telegram import Update
-from telegram.ext import Application, CommandHandler, ContextTypes, CallbackQueryHandler
+from telegram.ext import Application, CommandHandler, CallbackQueryHandler
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from TOKEN import TOKEN
 from TEXTS import TEXTS
 from handlers.card_handler import CardHandler
 from handlers.pokemon_handler import PokemonHandler
+from handlers.bot_handler import BotHandler
 
 # set higher logging level for httpx to avoid all GET and POST requests being logged
 # logging.getLogger("httpx").setLevel(logging.DEBUG)
@@ -34,21 +35,6 @@ if __version_info__ < (20, 0, 0, "alpha", 1):
     )
 
 
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    """Send a message when the command /start is issued."""
-    user = update.effective_user
-    await update.message.reply_html(
-        text=TEXTS["IT"]["START_MESSAGE_TEXT"].replace(
-            "<username>", f"{user.mention_html()}"
-        )
-    )
-
-
-async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    """Send a message when the command /help is issued."""
-    await update.message.reply_html(TEXTS["IT"]["HELP_MESSAGE_TEXT"])
-
-
 def main() -> None:
     """Start the bot."""
     # Create the Application and pass it your bot's token.
@@ -56,10 +42,11 @@ def main() -> None:
 
     card_handler = CardHandler()
     pokemon_handler = PokemonHandler()
+    bot_handler = BotHandler()
 
     # on different commands - answer in Telegram
-    application.add_handler(CommandHandler("start", start))
-    application.add_handler(CommandHandler("help", help_command))
+    application.add_handler(CommandHandler("start", bot_handler.start))
+    application.add_handler(CommandHandler("help", bot_handler.help_command))
     application.add_handler(
         CommandHandler(TEXTS["SEARCH_POKEMON_KEYWORD"], pokemon_handler.send_pokemon)
     )

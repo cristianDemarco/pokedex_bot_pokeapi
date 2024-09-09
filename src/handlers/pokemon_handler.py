@@ -5,7 +5,6 @@ from data_models_mapper import map_API_data_to_pokemon
 
 import telegram.error
 from telegram import InlineKeyboardMarkup, Update
-from telegram import Update
 from telegram.ext import ContextTypes
 
 from clients.pokemon_API import PokemonAPI
